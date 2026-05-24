@@ -387,15 +387,23 @@ if [ "$MODE" = "repair" ]; then
     fi
   else
     read -rp "  Домен Matrix: " DOMAIN
+    DOMAIN=$(echo "$DOMAIN" | tr -d '[:space:]')
   fi
   load_secrets
   [ -z "$LIVEKIT_DOMAIN" ] && read -rp "  Домен LiveKit: " LIVEKIT_DOMAIN
   [ -z "$LE_EMAIL" ]       && read -rp "  Email для SSL:  " LE_EMAIL
+  LIVEKIT_DOMAIN=$(echo "$LIVEKIT_DOMAIN" | tr -d '[:space:]')
+  LE_EMAIL=$(echo "$LE_EMAIL" | tr -d '[:space:]')
 else
   read -rp "  Домен Matrix  (matrix.example.com):  " DOMAIN
   read -rp "  Домен LiveKit (livekit.example.com): " LIVEKIT_DOMAIN
   read -rp "  Email для SSL: " LE_EMAIL
 fi
+
+# Чистим пробелы и переносы строк
+DOMAIN=$(echo "$DOMAIN" | tr -d '[:space:]')
+LIVEKIT_DOMAIN=$(echo "$LIVEKIT_DOMAIN" | tr -d '[:space:]')
+LE_EMAIL=$(echo "$LE_EMAIL" | tr -d '[:space:]')
 
 [ -z "$DOMAIN" ]         && die "Домен Matrix обязателен"
 [ -z "$LIVEKIT_DOMAIN" ] && die "Домен LiveKit обязателен"
